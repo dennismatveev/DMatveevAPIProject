@@ -1,10 +1,10 @@
 import requests
-import Secrets
+import secrets
 
 
 def get_data(url: str):
-    all_data = []
-    full_url = f"{url}&api_key={Secrets.api_key}&page=3"
+    all_data = [] #this will hold the return value
+    full_url = f"{url}&api_key={secrets.api_key}&page=3"
     response = requests.get(full_url)
     if response.status_code != 200:
         print(response.text)
@@ -18,7 +18,9 @@ def get_data(url: str):
 def main():
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields=id,school.name,2013.student.size"
     all_data = get_data(url)
-    print(all_data)
+    for item in all_data:
+        print(item)
+
 
 
 if __name__ == '__main__':
