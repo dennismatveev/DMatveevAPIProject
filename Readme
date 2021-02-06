@@ -5,5 +5,5 @@ To whom it may concern,
     This project is designed to retrieve college data using an API key,
         the current fields that are displayed are the school name, school city,
         student size in 2018 & 2017, 2017 earnings 3 years after completion of college,
-        as well as the 2016 repayment after 3 years.
+        as well as the 2016 repayment after 3 years. It then saves the data to an external file.
     There is nothing missing from the code.
