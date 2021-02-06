@@ -2,7 +2,6 @@ import requests
 import secrets
 import time
 import math
-import pprint
 
 
 def get_data(url: str):
@@ -38,10 +37,6 @@ def main():
     all_data = get_data(url)
     with open('College_data.txt', 'w') as f:
         print(all_data, file=f)
-
-    # for item in all_data:
-    #     print(item)
-
 
 
 if __name__ == '__main__':
