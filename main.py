@@ -18,6 +18,7 @@ def get_data(url: str):
     # Convert List to  String
     field_string = ''.join(fields)
 
+    # Loop through amount of pages and get all data points from each page
     for pages in range(0, math.ceil(total_items/items_per_page)):
         full_url = f"{url}{field_string}&api_key={secrets.api_key}&page={pages}"
         response = requests.get(full_url)
