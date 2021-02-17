@@ -1,4 +1,5 @@
 import main
+import secrets
 
 
 def test_entries():  # Tests to see if more than 1000 entries were obtained
