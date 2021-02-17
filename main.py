@@ -64,11 +64,13 @@ def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
 
     for element in all_data:  # Traverse through all data from API and place it into the correct field
 
-        cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018, student_size_2017,
-                                                earnings_after3yearscompletion_2017, repayment_3years_2016)
+        cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018,
+                                                student_size_2017,earnings_after3yearscompletion_2017,
+                                                 repayment_3years_2016)
                 VALUES (?, ?, ?, ?, ?, ?, ?)''', (element['id'], element['school.name'], element['school.city'],
                                                   element['2018.student.size'], element['2017.student.size'],
-                                                  element['2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line'],
+                                                  element['2017.earnings.3_yrs_after_completion'
+                                                          '.overall_count_over_poverty_line'],
                                                   element['2016.repayment.3_yr_repayment.overall']))
 
 

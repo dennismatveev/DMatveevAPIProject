@@ -8,7 +8,7 @@ def test_entries():  # Tests to see if more than 1000 entries were obtained
     assert size >= 1000
 
 
-def test_university_test(): # Choose a random target unique id, create the new database and verify the id is present
+def test_university_test():  # Choose a random target unique id, create the new database and verify the id is present
     target_unique_id = 141802  # Alabama A & M University SchoolCity Normal
     new_table_name = "University_Data"
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
