@@ -3,7 +3,7 @@ To whom it may concern,
     My name is Dennis Matveev,
     This project does not have any special directions needed to run it.
     This project is designed to retrieve college data using an API key,
-        the current fields that are displayed are the school name, school city,
+        the current fields that are displayed are the id, school name, school city,
         student size in 2018 & 2017, 2017 earnings 3 years after completion of college,
         as well as the 2016 repayment after 3 years.
         The retrieved data is placed into a database, where it is organized by each of the fields.
