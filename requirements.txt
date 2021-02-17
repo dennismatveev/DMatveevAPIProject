@@ -1,1 +1,5 @@
 requests
+secrets
+time
+math
+sqlite3
