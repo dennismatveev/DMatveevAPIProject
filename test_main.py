@@ -1,7 +1,6 @@
 import main
 
 
-
 def test_entries():  # Tests to see if more than 1000 entries were obtained
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
     all_data = main.get_data(url)
