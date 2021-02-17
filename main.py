@@ -45,6 +45,7 @@ def close_db(connection: sqlite3.Connection):
     connection.close()
 
 
+# make the database and assign the fields
 def setup_db(cursor: sqlite3.Cursor, table_name):
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
     unique_id INTEGER PRIMARY KEY,
@@ -57,10 +58,11 @@ def setup_db(cursor: sqlite3.Cursor, table_name):
     );''')
 
 
+# Populate database
 def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
-    cursor.execute(f''' DELETE FROM ''' + table_name)
+    cursor.execute(f''' DELETE FROM ''' + table_name) #Deletes table, to ensure no data is left over
 
-    for element in all_data:
+    for element in all_data: #Traverse through all data from API and place it into the correct field
 
         cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018, student_size_2017,
                                                 earnings_after3yearscompletion_2017, repayment_3years_2016)
@@ -77,7 +79,6 @@ def main():
     conn, cursor = open_db("demo_db.sqlite")
     setup_db(cursor, table_name)
     populate_database(cursor, all_data, table_name)
-
     close_db(conn)
 
 

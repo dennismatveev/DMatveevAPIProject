@@ -11,4 +11,7 @@ To whom it may concern,
         On the top of the database, you will see all the fields which is created upon the creation of the database.
         Next I traversed through the dictionary elements of my list, and assigned each element to the respected field.
 
+        Two tests were setup. One that verifies that over 1000 data was entered, and the another tests that
+        a new database can be created and it will have a chosen unique id for the school.
+
     There is nothing missing from the code.
