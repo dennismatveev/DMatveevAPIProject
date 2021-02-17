@@ -10,7 +10,7 @@ def get_data(url: str):
     total_items = 3203
     items_per_page = 20
     # Which fields are desired in the output
-    fields = ["school.name,", "school.city,", "2018.student.size,", "2017.student.size,",
+    fields = ["id,", "school.name,", "school.city,", "2018.student.size,", "2017.student.size,",
               "2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line,",
               "2016.repayment.3_yr_repayment.overall"
               ]
@@ -47,7 +47,8 @@ def close_db(connection: sqlite3.Connection):
 
 def setup_db(cursor: sqlite3.Cursor, table_name):
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
-    school_name TEXT NOT NULL PRIMARY KEY,
+    unique_id INTEGER PRIMARY KEY,
+    school_name TEXT NOT NULL,
     school_city TEXT NOT NULL,
     student_size_2018 INTEGER DEFAULT 0,
     student_size_2017 INTEGER DEFAULT 0,
@@ -60,11 +61,12 @@ def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
     cursor.execute(f''' DELETE FROM ''' + table_name)
 
     for element in all_data:
-        cursor.execute(f'''INSERT INTO ''' + table_name + ''' (school_name, school_city, student_size_2018, student_size_2017,
+        cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018, student_size_2017,
                                                 earnings_after3yearscompletion_2017, repayment_3years_2016)
-                VALUES (?, ?, ?, ?, ?, ?)''', (element['school.name'], element['school.city'], element['2018.student.size'], element['2017.student.size'],
-                                                element['2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line'],
-                                                element['2016.repayment.3_yr_repayment.overall']))
+                VALUES (?, ?, ?, ?, ?, ?, ?)''', (element['id'], element['school.name'], element['school.city'],
+                                                  element['2018.student.size'], element['2017.student.size'],
+                                                  element['2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line'],
+                                                  element['2016.repayment.3_yr_repayment.overall']))
 
 
 def main():
