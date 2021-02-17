@@ -1,25 +1,22 @@
 import main
 
 
-def test_entries():
-    new_table_name = "University_Test"
+def test_entries():  # Tests to see if more than 1000 entries were obtained
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
     all_data = main.get_data(url)
-    conn, cursor = main.open_db("demo_db.sqlite")
-    main.setup_db(cursor, new_table_name)
-    main.populate_database(cursor, all_data, new_table_name)
-    main.close_db(conn)
+    size = len(all_data)
+    assert size >= 1000
 
 
 def test_university_test():
-    new_table_name = "University_Test"
+    target_unique_id = 141802  # Alabama A & M University SchoolCity Normal
+    new_table_name = "University_Data"
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
     all_data = main.get_data(url)
-    conn, cursor = main.open_db("demo_db.sqlite")
+    conn, cursor = main.open_db("demo_db_test.sqlite")
     main.setup_db(cursor, new_table_name)
     main.populate_database(cursor, all_data, new_table_name)
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    cursor.execute("SELECT unique_id FROM " + new_table_name + " WHERE unique_id =" + str(target_unique_id))
     data = cursor.fetchall()
-    for table in data:
-        if "University_Test" in table:
-            assert True
+    main.close_db(conn)
+    assert target_unique_id == data[0][0]
