@@ -21,7 +21,7 @@ def get_data(url: str):
     field_string = ''.join(fields)
 
     # Loop through amount of pages and get all data points from each page
-    for pages in range(0, math.ceil(total_items / items_per_page)):
+    for pages in range(0, 1): #math.ceil(total_items / items_per_page)
         full_url = f"{url}{field_string}&api_key={secrets.api_key}&page={pages}"
         response = requests.get(full_url)
         if response.status_code != 200:
@@ -60,11 +60,11 @@ def setup_db(cursor: sqlite3.Cursor, table_name):
 
 # Populate database
 def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
-    cursor.execute(f''' DELETE FROM ''' + table_name)  # Deletes table, to ensure no data is left over
+    cursor.execute(f''' DELETE FROM {table_name}''')  # Deletes table, to ensure no data is left over
 
     for element in all_data:  # Traverse through all data from API and place it into the correct field
 
-        cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018,
+        cursor.execute(f'''INSERT INTO {table_name} (unique_id, school_name, school_city, student_size_2018,
                                                 student_size_2017,earnings_after3yearscompletion_2017,
                                                  repayment_3years_2016)
                 VALUES (?, ?, ?, ?, ?, ?, ?)''', (element['id'], element['school.name'], element['school.city'],
