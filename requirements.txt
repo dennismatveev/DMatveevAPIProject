@@ -1,5 +1,5 @@
 requests
-pyOpenSSL
+OpenSSL
 secrets
 time
 math
