@@ -60,9 +60,9 @@ def setup_db(cursor: sqlite3.Cursor, table_name):
 
 # Populate database
 def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
-    cursor.execute(f''' DELETE FROM ''' + table_name) #Deletes table, to ensure no data is left over
+    cursor.execute(f''' DELETE FROM ''' + table_name)  # Deletes table, to ensure no data is left over
 
-    for element in all_data: #Traverse through all data from API and place it into the correct field
+    for element in all_data:  # Traverse through all data from API and place it into the correct field
 
         cursor.execute(f'''INSERT INTO ''' + table_name + ''' (unique_id, school_name, school_city, student_size_2018, student_size_2017,
                                                 earnings_after3yearscompletion_2017, repayment_3years_2016)
