@@ -25,6 +25,7 @@ jobs:
         API_KEY: ${{ secrets.api_key }}
       run: |
         echo 'api_key = "'$API_KEY'"' >> secrets.py
+        echo $API_KEY
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
