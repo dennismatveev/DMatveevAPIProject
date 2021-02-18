@@ -19,4 +19,4 @@ def test_university_test():  # Choose a random target unique id, create the new 
     cursor.execute(f"SELECT unique_id FROM {new_table_name} WHERE unique_id ={str(target_unique_id)}")
     data = cursor.fetchall()
     main.close_db(conn)
-    assert target_unique_id == data[0][0]
+    assert data and (target_unique_id == data[0][0])  # Checking if data array exists, if yes then also check actual id
