@@ -22,7 +22,7 @@ jobs:
         python-version: 3.9
     - name: Build Secrets
       env:
-        API_KEY: ${{secrets.api_key}}
+        API_KEY: ${{ secrets.api_key }}
       run: |
         echo 'api_key = "'$API_KEY'"' >> secrets.py
     - name: Install dependencies
