@@ -75,6 +75,7 @@ def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
 
 
 def main():
+    # comment to test workflow
     table_name = 'University_Data'
     url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
     all_data = get_data(url)
