@@ -99,14 +99,14 @@ def setup_xls_db(cursor: sqlite3.Cursor, table_name):
 
 
 def main():
-    # api_table_name = 'University_Data'
+    api_table_name = 'University_Data'
     xls_table_name = 'XLS_University_Data'
-    # url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
-    # all_data = get_data(url)
+    url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
+    all_data = get_data(url)
     conn, cursor = open_db("demo_db.sqlite")
 
-    # setup_api_db(cursor, api_table_name)
-    # populate_api_udatabase(cursor, all_data, api_table_name)
+    setup_api_db(cursor, api_table_name)
+    populate_api_database(cursor, all_data, api_table_name)
     setup_xls_db(cursor, xls_table_name)
     workbook = openpyxl.load_workbook("CollegeData.xlsx")
     worksheet = workbook.active
