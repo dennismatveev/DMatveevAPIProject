@@ -20,4 +20,9 @@ To whom it may concern,
         After rereading the instruction for the code, I decided to get rid of this as it wasn't what
         the test was asking for. So I changed it to determine if a specific key is in the new database that is created.
 
+
+    Receives data from Excel file, creates new table, and populates database with current data:
+        Occupation code, State, Occupation Title of type Major, Total employment for that state, and the
+        25th percentile salary of the occupation in that state
+
     There is nothing missing from the code.
