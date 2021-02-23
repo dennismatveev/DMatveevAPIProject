@@ -8,6 +8,8 @@ To whom it may concern,
         as well as the 2016 repayment after 3 years.
         The retrieved data is placed into a database, where it is organized by each of the fields.
 
+        Requirements.txt was created so the .yml was able to get the necessary dependencies
+
         On the top of the database, you will see all the fields which is created upon the creation of the database.
         Next I traversed through the dictionary elements of my list, and assigned each element to the respected field.
 

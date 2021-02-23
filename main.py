@@ -4,6 +4,7 @@ import time
 import sqlite3
 import math
 from typing import Tuple
+import openpyxl
 
 
 def get_data(url: str):
@@ -59,7 +60,7 @@ def setup_api_db(cursor: sqlite3.Cursor, table_name):
 
 
 # Populate database
-def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
+def populate_api_database(cursor: sqlite3.Cursor, all_data, table_name):
     cursor.execute(f''' DELETE FROM {table_name}''')  # Deletes table, to ensure no data is left over
 
     for element in all_data:  # Traverse through all data from API and place it into the correct field
@@ -74,25 +75,42 @@ def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
                                                   element['2016.repayment.3_yr_repayment.overall']))
 
 
-def setup_xls_db(cursor:sqlite3.Cursor, table_name):
+def populate_xls_db(cursor: sqlite3.Cursor, ws, xls_table_name):
+    cursor.execute(f''' DELETE FROM {xls_table_name}''')  # Deletes table, to ensure no data is left over
+
+    for row in ws:
+        if row[9].value == 'major':
+
+            cursor.execute(f'''INSERT INTO {xls_table_name} (occupation_code, state_name, occupation_major_title,
+                                                            total_employment, hourly_25th_salary, annual_25th_salary)
+                VALUES (?, ?, ?, ?, ?, ?)''', (row[7].value, row[1].value, row[8].value, row[10].value, row[19].value, row[24].value))
+
+
+def setup_xls_db(cursor: sqlite3.Cursor, table_name):
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
-    state_name TEXT PRIMARY KEY,
+    occupation_code TEXT,
+    state_name TEXT,
     occupation_major_title TEXT NOT NULL,
     total_employment INTEGER DEFAULT 0,
-    twenty_fifth_percentile_salary INTEGER DEFAULT 0
+    hourly_25th_salary INTEGER DEFAULT 0,
+    annual_25th_salary INTEGER DEFAULT 0,
+    PRIMARY KEY(occupation_code,state_name)
     );''')
 
 
 def main():
-    #api_table_name = 'University_Data'
+    # api_table_name = 'University_Data'
     xls_table_name = 'XLS_University_Data'
-    #url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
-    #all_data = get_data(url)
+    # url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
+    # all_data = get_data(url)
     conn, cursor = open_db("demo_db.sqlite")
 
-    #setup_api_db(cursor, api_table_name)
-    #populate_database(cursor, all_data, api_table_name)
+    # setup_api_db(cursor, api_table_name)
+    # populate_api_udatabase(cursor, all_data, api_table_name)
     setup_xls_db(cursor, xls_table_name)
+    workbook = openpyxl.load_workbook("CollegeData.xlsx")
+    worksheet = workbook.active
+    populate_xls_db(cursor, worksheet, xls_table_name)
     close_db(conn)
 
 
