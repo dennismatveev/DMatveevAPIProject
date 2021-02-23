@@ -46,7 +46,7 @@ def close_db(connection: sqlite3.Connection):
 
 
 # make the database and assign the fields
-def setup_db(cursor: sqlite3.Cursor, table_name):
+def setup_api_db(cursor: sqlite3.Cursor, table_name):
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
     unique_id INTEGER PRIMARY KEY,
     school_name TEXT NOT NULL,
@@ -74,13 +74,25 @@ def populate_database(cursor: sqlite3.Cursor, all_data, table_name):
                                                   element['2016.repayment.3_yr_repayment.overall']))
 
 
+def setup_xls_db(cursor:sqlite3.Cursor, table_name):
+    cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
+    state_name TEXT PRIMARY KEY,
+    occupation_major_title TEXT NOT NULL,
+    total_employment INTEGER DEFAULT 0,
+    twenty_fifth_percentile_salary INTEGER DEFAULT 0
+    );''')
+
+
 def main():
-    table_name = 'University_Data'
-    url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
-    all_data = get_data(url)
+    #api_table_name = 'University_Data'
+    xls_table_name = 'XLS_University_Data'
+    #url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
+    #all_data = get_data(url)
     conn, cursor = open_db("demo_db.sqlite")
-    setup_db(cursor, table_name)
-    populate_database(cursor, all_data, table_name)
+
+    #setup_api_db(cursor, api_table_name)
+    #populate_database(cursor, all_data, api_table_name)
+    setup_xls_db(cursor, xls_table_name)
     close_db(conn)
 
 
