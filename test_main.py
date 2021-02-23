@@ -91,5 +91,6 @@ def test_old_table_exists():  # Tests to see if old table still exists in databa
     assert tables and boolean  # Checking to see if tables array exists, and if desired table is in the database
 
 
+
 def test_write_to_table():
     pass  # double check it actually wrote the right data
