@@ -91,6 +91,25 @@ def test_old_table_exists():  # Tests to see if old table still exists in databa
     assert tables and boolean  # Checking to see if tables array exists, and if desired table is in the database
 
 
-
 def test_write_to_table():
-    pass  # double check it actually wrote the right data
+    target_state_name = 'Arizona'
+    target_occupation_title = 'Management Occupations'
+    xls_table_name = 'XLS_University_Data'
+    conn, cursor = main.open_db("demo_db.sqlite")
+
+    main.setup_xls_db(cursor, xls_table_name)
+    workbook = main.openpyxl.load_workbook("CollegeData.xlsx")
+    worksheet = workbook.active
+    main.populate_xls_db(cursor, worksheet, xls_table_name)
+
+    # cursor.execute(f"SELECT * FROM {xls_table_name} WHERE occupation_code LIKE '23-000' or state_name LIKE 'Arizona'")
+    cursor.execute(f"SELECT * FROM {xls_table_name} WHERE occupation_major_title LIKE 'Management Occupations'"
+                   f" AND state_name LIKE 'Arizona'")
+    tables = cursor.fetchall()
+    main.close_db(conn)
+    assert len(tables) == 1
+    boolean = False
+    for value in tables:
+        if target_state_name in value:
+            boolean = True
+    assert boolean
