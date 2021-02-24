@@ -83,7 +83,8 @@ def populate_xls_db(cursor: sqlite3.Cursor, ws, xls_table_name):
 
             cursor.execute(f'''INSERT INTO {xls_table_name} (occupation_code, state_name, occupation_major_title,
                                                             total_employment, hourly_25th_salary, annual_25th_salary)
-                VALUES (?, ?, ?, ?, ?, ?)''', (row[7].value, row[1].value, row[8].value, row[10].value, row[19].value, row[24].value))
+                VALUES (?, ?, ?, ?, ?, ?)''', (row[7].value, row[1].value, row[8].value, row[10].value, row[19].value,
+                                               row[24].value))
 
 
 def setup_xls_db(cursor: sqlite3.Cursor, table_name):

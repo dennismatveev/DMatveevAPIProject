@@ -51,7 +51,7 @@ def test_tables_exist():  # Tests to see if new table is in database
     worksheet = workbook.active
     main.populate_xls_db(cursor, worksheet, xls_table_name)
 
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table'")
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
     tables = cursor.fetchall()
     main.close_db(conn)
 
@@ -79,7 +79,7 @@ def test_old_table_exists():  # Tests to see if old table still exists in databa
     worksheet = workbook.active
     main.populate_xls_db(cursor, worksheet, xls_table_name)
 
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table'")
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
     tables = cursor.fetchall()
     main.close_db(conn)
 
@@ -93,7 +93,6 @@ def test_old_table_exists():  # Tests to see if old table still exists in databa
 
 def test_write_to_table():
     target_state_name = 'Arizona'
-    target_occupation_title = 'Management Occupations'
     xls_table_name = 'XLS_University_Data'
     conn, cursor = main.open_db("demo_db.sqlite")
 
@@ -102,9 +101,8 @@ def test_write_to_table():
     worksheet = workbook.active
     main.populate_xls_db(cursor, worksheet, xls_table_name)
 
-    # cursor.execute(f"SELECT * FROM {xls_table_name} WHERE occupation_code LIKE '23-000' or state_name LIKE 'Arizona'")
     cursor.execute(f"SELECT * FROM {xls_table_name} WHERE occupation_major_title LIKE 'Management Occupations'"
-                   f" AND state_name LIKE 'Arizona'")
+                   " AND state_name LIKE 'Arizona'")
     tables = cursor.fetchall()
     main.close_db(conn)
     assert len(tables) == 1
