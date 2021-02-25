@@ -2,7 +2,6 @@ import requests
 import secrets
 import time
 import sqlite3
-import math
 from typing import Tuple
 import openpyxl
 
