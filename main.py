@@ -36,6 +36,7 @@ def get_data(url: str):
             continue
         current_page = response.json()
         all_data.extend(current_page['results'])
+        time.sleep(.05)
 
     return all_data
 
