@@ -46,8 +46,8 @@ def close_db(connection: sqlite3.Connection):
     connection.close()
 
 
-# make the database and assign the fields
-def setup_api_db(cursor: sqlite3.Cursor, table_name):
+def setup_api_db(cursor: sqlite3.Cursor, table_name):  # make the database and assign the fields
+    # noinspection SpellCheckingInspection
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
     unique_id INTEGER PRIMARY KEY,
     school_name TEXT NOT NULL,
@@ -59,8 +59,7 @@ def setup_api_db(cursor: sqlite3.Cursor, table_name):
     );''')
 
 
-# Populate database
-def populate_api_database(cursor: sqlite3.Cursor, all_data, table_name):
+def populate_api_database(cursor: sqlite3.Cursor, all_data, table_name):  # Populate database
     cursor.execute(f''' DELETE FROM {table_name}''')  # Deletes table, to ensure no data is left over
 
     for element in all_data:  # Traverse through all data from API and place it into the correct field
@@ -75,18 +74,6 @@ def populate_api_database(cursor: sqlite3.Cursor, all_data, table_name):
                                                   element['2016.repayment.3_yr_repayment.overall']))
 
 
-def populate_xls_db(cursor: sqlite3.Cursor, ws, xls_table_name):
-    cursor.execute(f''' DELETE FROM {xls_table_name}''')  # Deletes table, to ensure no data is left over
-
-    for row in ws:
-        if row[9].value == 'major':
-
-            cursor.execute(f'''INSERT INTO {xls_table_name} (occupation_code, state_name, occupation_major_title,
-                                                            total_employment, hourly_25th_salary, annual_25th_salary)
-                VALUES (?, ?, ?, ?, ?, ?)''', (row[7].value, row[1].value, row[8].value, row[10].value, row[19].value,
-                                               row[24].value))
-
-
 def setup_xls_db(cursor: sqlite3.Cursor, table_name):
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
     occupation_code TEXT,
@@ -97,6 +84,18 @@ def setup_xls_db(cursor: sqlite3.Cursor, table_name):
     annual_25th_salary INTEGER DEFAULT 0,
     PRIMARY KEY(occupation_code,state_name)
     );''')
+
+
+def populate_xls_db(cursor: sqlite3.Cursor, ws, xls_table_name):  # Populates database with data from excel file
+    cursor.execute(f''' DELETE FROM {xls_table_name}''')  # Deletes table, to ensure no data is left over
+
+    for row in ws:
+        if row[9].value == 'major':  # If the group is 'major' then acquire the data associated with it
+
+            cursor.execute(f'''INSERT INTO {xls_table_name} (occupation_code, state_name, occupation_major_title,
+                                                            total_employment, hourly_25th_salary, annual_25th_salary)
+                VALUES (?, ?, ?, ?, ?, ?)''', (row[7].value, row[1].value, row[8].value, row[10].value, row[19].value,
+                                               row[24].value))
 
 
 def main():

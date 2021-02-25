@@ -35,7 +35,7 @@ def test_data_acquired():  # Tests if data from more than 50 states was obtained
     assert len(states_acquired_xls) >= target_number_states
 
 
-def test_tables_exist():  # Tests to see if new table is in database
+def test_new_table_exist():  # Tests to see if new table is in database
     target_table = 'XLS_University_Data'
     api_table_name = 'University_Data'
     xls_table_name = 'XLS_University_Data'
@@ -91,7 +91,7 @@ def test_old_table_exists():  # Tests to see if old table still exists in databa
     assert tables and boolean  # Checking to see if tables array exists, and if desired table is in the database
 
 
-def test_write_to_table():
+def test_write_to_table():  # Check to see if Arizona is a state that has a major of Management Occupations
     target_state_name = 'Arizona'
     xls_table_name = 'XLS_University_Data'
     conn, cursor = main.open_db("demo_db.sqlite")
@@ -105,9 +105,11 @@ def test_write_to_table():
                    " AND state_name LIKE 'Arizona'")
     tables = cursor.fetchall()
     main.close_db(conn)
-    assert len(tables) == 1
-    boolean = False
-    for value in tables:
-        if target_state_name in value:
-            boolean = True
-    assert boolean
+    assert len(tables) == 1  # If we got some data from the excel file
+
+    # Go through the nested list, to see if the target state is included in the states with that major
+    is_exist = False
+    for nested_data in tables:
+        if target_state_name in nested_data:
+            is_exist = True
+    assert is_exist

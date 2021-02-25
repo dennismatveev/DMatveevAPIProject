@@ -8,7 +8,8 @@ To whom it may concern,
         as well as the 2016 repayment after 3 years.
         The retrieved data is placed into a database, where it is organized by each of the fields.
 
-        Requirements.txt was created so the .yml was able to get the necessary dependencies
+        Requirements.txt was created so the .yml was able to get the necessary dependencies:
+        requests & openpyxl
 
         On the top of the database, you will see all the fields which is created upon the creation of the database.
         Next I traversed through the dictionary elements of my list, and assigned each element to the respected field.
@@ -24,5 +25,13 @@ To whom it may concern,
     Receives data from Excel file, creates new table, and populates database with current data:
         Occupation code, State, Occupation Title of type Major, Total employment for that state, and the
         25th percentile salary of the occupation in that state
+
+        Four more tests were created: One to test if data from more than 50 states was collected. Another to test
+        if the new table exists in the database. As well as if the first(api) table exists too. The last test
+        verified that a certain datapoint existed in the new table that was created from the excel file.
+
+    * Just fyi: The GitHub Test took about 10 minutes to run and complete. I believe this is due to me having it
+    create the db and populate it in each test. Since I was under the impression each test must be independent of
+    everything else. *
 
     There is nothing missing from the code.
