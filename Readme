@@ -30,7 +30,7 @@ To whom it may concern,
         if the new table exists in the database. As well as if the first(api) table exists too. The last test
         verified that a certain datapoint existed in the new table that was created from the excel file.
 
-    * Just fyi: The GitHub Test took about 10 minutes to run and complete. I believe this is due to me having it
+    * Just fyi: The GitHub Test took about 5-10 minutes to run and complete. I believe this is due to me having it
     create the db and populate it in each test. Since I was under the impression each test must be independent of
     everything else. *
 
