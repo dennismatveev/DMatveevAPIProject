@@ -8,9 +8,9 @@ import openpyxl
 
 def get_data(url: str):
     # Which fields are desired in the output
-    fields = ["id,", "school.name,", "school.city,", "2018.student.size,", "2017.student.size,",
+    fields = ["id,", "school.state,", "school.name,", "school.city,", "2018.student.size,", "2017.student.size,",
               "2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line,",
-              "2016.repayment.3_yr_repayment.overall"
+              "2016.repayment.3_yr_repayment.overall,", "2016.repayment.repayment_cohort.3_year_declining_balance"
               ]
     # this will hold the return value
     all_data = []
@@ -55,12 +55,14 @@ def setup_api_db(cursor: sqlite3.Cursor, table_name):  # make the database and a
     # noinspection SpellCheckingInspection
     cursor.execute('''CREATE TABLE IF NOT EXISTS ''' + table_name + ''' (
     unique_id INTEGER PRIMARY KEY,
+    school_state TEXT NOT NULL,
     school_name TEXT NOT NULL,
     school_city TEXT NOT NULL,
     student_size_2018 INTEGER DEFAULT 0,
     student_size_2017 INTEGER DEFAULT 0,
     earnings_after3yearscompletion_2017 INTEGER DEFAULT 0,
-    repayment_3years_2016 INTEGER DEFAULT 0
+    repayment_3years_2016 INTEGER DEFAULT 0,
+    repayment_3yearDecliningBal_2016 REAL Default 0
     );''')
 
 
@@ -69,14 +71,18 @@ def populate_api_database(cursor: sqlite3.Cursor, all_data, table_name):  # Popu
 
     for element in all_data:  # Traverse through all data from API and place it into the correct field
 
-        cursor.execute(f'''INSERT INTO {table_name} (unique_id, school_name, school_city, student_size_2018,
-                                                student_size_2017,earnings_after3yearscompletion_2017,
-                                                 repayment_3years_2016)
-                VALUES (?, ?, ?, ?, ?, ?, ?)''', (element['id'], element['school.name'], element['school.city'],
-                                                  element['2018.student.size'], element['2017.student.size'],
-                                                  element['2017.earnings.3_yrs_after_completion'
-                                                          '.overall_count_over_poverty_line'],
-                                                  element['2016.repayment.3_yr_repayment.overall']))
+        cursor.execute(f'''INSERT INTO {table_name} (unique_id, school_state, school_name, school_city,
+                                                    student_size_2018, student_size_2017,
+                                                    earnings_after3yearscompletion_2017,
+                                                    repayment_3years_2016, repayment_3yearDecliningBal_2016)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (element['id'], element['school.state'], element['school.name'],
+                                                        element['school.city'],
+                                                        element['2018.student.size'], element['2017.student.size'],
+                                                        element['2017.earnings.3_yrs_after_completion'
+                                                                '.overall_count_over_poverty_line'],
+                                                        element['2016.repayment.3_yr_repayment.overall'],
+                                                        element['2016.repayment.repayment_cohort'
+                                                                '.3_year_declining_balance']))
 
 
 def setup_xls_db(cursor: sqlite3.Cursor, table_name):
@@ -116,6 +122,7 @@ def main():
     workbook = openpyxl.load_workbook("CollegeData.xlsx")
     worksheet = workbook.active
     populate_xls_db(cursor, worksheet, xls_table_name)
+
     close_db(conn)
 
 
