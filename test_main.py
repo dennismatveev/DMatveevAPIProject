@@ -23,6 +23,11 @@ def test_university_test():  # Choose a random target unique id, create the new 
     assert data and (target_unique_id == data[0][0])  # Checking if data array exists, if yes then also check actual id
 
 
+
+
+
+
+
 def test_data_acquired():  # Tests if data from more than 50 states was obtained
     target_number_states = 50
     states_acquired_xls = []

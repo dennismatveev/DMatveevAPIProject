@@ -2,8 +2,12 @@ import requests
 import secrets
 import time
 import sqlite3
-from typing import Tuple
+from typing import Tuple, List, Dict
 import openpyxl
+import plotly
+import PySide2.QtWidgets
+import sys
+import GuiWindow
 
 
 def get_data(url: str):
@@ -109,21 +113,30 @@ def populate_xls_db(cursor: sqlite3.Cursor, ws, xls_table_name):  # Populates da
                                                row[24].value))
 
 
-def main():
-    api_table_name = 'University_Data'
-    xls_table_name = 'XLS_University_Data'
-    url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
-    all_data = get_data(url)
-    conn, cursor = open_db("demo_db.sqlite")
-
-    setup_api_db(cursor, api_table_name)
-    populate_api_database(cursor, all_data, api_table_name)
-    setup_xls_db(cursor, xls_table_name)
-    workbook = openpyxl.load_workbook("CollegeData.xlsx")
+def update_db_from_xl(filename: str, cursor: sqlite3.Cursor, table_name):
+    workbook = openpyxl.load_workbook(filename)
     worksheet = workbook.active
-    populate_xls_db(cursor, worksheet, xls_table_name)
+    populate_xls_db(cursor, worksheet, table_name)
 
-    close_db(conn)
+
+def main():
+    # api_table_name = 'University_Data'
+    # xls_table_name = 'XLS_University_Data'
+    # url = "https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="
+    # all_data = get_data(url)
+    # conn, cursor = open_db("demo_db.sqlite")
+    #
+    # setup_api_db(cursor, api_table_name)
+    # populate_api_database(cursor, all_data, api_table_name)
+    # setup_xls_db(cursor, xls_table_name)
+    # update_db_from_xl("CollegeData.xlsx", cursor, xls_table_name)
+    #
+    # close_db(conn)
+    qt_app = PySide2.QtWidgets.QApplication(sys.argv)  # sys.argv is the list of command line arguments
+
+    example = GuiWindow.WindowSelectAction()
+    example.show()
+    sys.exit(qt_app.exec_())
 
 
 if __name__ == '__main__':
