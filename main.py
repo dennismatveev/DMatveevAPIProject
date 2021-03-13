@@ -1,14 +1,14 @@
 import PySide2.QtWidgets
 import sys
-import GuiWindowTest
+import GuiWindow
 
 
 def main():
 
     qt_app = PySide2.QtWidgets.QApplication(sys.argv)  # sys.argv is the list of command line arguments
 
-    example = GuiWindowTest.Window()
-    example.show()
+    gui = GuiWindow.Window()
+    gui.show()
     sys.exit(qt_app.exec_())
 
 
