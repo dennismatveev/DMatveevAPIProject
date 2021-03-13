@@ -1,7 +1,6 @@
-from PySide2.QtWidgets import QWidget, QPushButton, QListWidget, QApplication, QListWidgetItem, QFileDialog, QComboBox, \
-    QHBoxLayout
+from PySide2.QtWidgets import QWidget, QPushButton, QListWidget, QApplication, QListWidgetItem, QFileDialog, QComboBox
 from typing import List, Dict
-import main
+import plotly
 
 
 class WindowSelectAction(QWidget):
@@ -40,11 +39,10 @@ class WindowSelectAction(QWidget):
     def selection_choice_update(self, combo_box):
         if combo_box == 1:
             self.update_action = 1
-            main.populate_api_database(populate_api_database(cursor, main.get_data("https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields="), api_table_name))
+
         elif combo_box == 2:
             self.update_action = 2
             file_name = self.choose_xlsx_file()
-            main.update_db_from_xl(file_name, cursor, "Updated_XLSX_Data")
 
     def selection_choice_visualize(self, combo_box):
         if combo_box == 1:
@@ -58,6 +56,5 @@ class WindowSelectAction(QWidget):
             pass
 
     def choose_xlsx_file(self):
-        filename = QFileDialog.getOpenFileName(self, "Open Image", None,"Image Files *.xlsx")
+        filename = QFileDialog.getOpenFileName(self, "Open Image", None, "Image Files *.xlsx")
         return filename
-
