@@ -1,60 +1,81 @@
-from PySide2.QtWidgets import QWidget, QPushButton, QListWidget, QApplication, QListWidgetItem, QFileDialog, QComboBox
-from typing import List, Dict
-import plotly
+from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar
+import DatabaseWork
+import ApiData
+import pathlib
 
 
-class WindowSelectAction(QWidget):
+class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.update_action = ""
-        self.visualize_action = ""
-        self.setWindowTitle("combo box demo")
-        self.setGeometry(100, 100, 400, 300)
-        self.setup_window()
 
-    def setup_window(self):
-        combo_box1 = QComboBox(self)
-        combo_box2 = QComboBox(self)
+        self.progress = QProgressBar(self)
+        self.setWindowTitle("Gui Interaction")
+        self.setGeometry(300, 200, 500, 400)
 
-        combo_box1.addItem("Select Which DB To Update")
-        combo_box1.addItem("Update API DB")
-        combo_box1.addItem("Update XLSX DB")
-        combo_box1.move(50, 50)
-        combo_box1.resize(combo_box1.sizeHint())
-        combo_box1.currentIndexChanged.connect(self.selection_choice_update)
+        self.create_menu()
 
-        combo_box2.addItem("Select Form of Data Visualization")
-        combo_box2.addItem("Color Coded Text (Ascending)")
-        combo_box2.addItem("Color Coded Text (Descending)")
-        combo_box2.addItem("Render Map")
-        combo_box2.move(50, 175)
-        combo_box2.resize(combo_box2.sizeHint())
-        combo_box2.currentIndexChanged.connect(self.selection_choice_visualize)
+    def create_menu(self):
+        main_menu = self.menuBar()
+        update_menu = main_menu.addMenu('Update')
+        visualize_menu = main_menu.addMenu("Visualize")
+        exit_menu = main_menu.addMenu("Exit")
 
-        quit_button = QPushButton("Quit Now", self)
-        quit_button.move(270, 100)
-        quit_button.resize(quit_button.sizeHint())
-        quit_button.clicked.connect(QApplication.instance().quit)
+        update_api = QAction("Update Api DB", self)
+        update_menu.addAction(update_api)
+        update_api.triggered.connect(self.update_api_DB)
 
-    def selection_choice_update(self, combo_box):
-        if combo_box == 1:
-            self.update_action = 1
+        update_xlsx = QAction("Update Xlsx DB", self)
+        update_menu.addAction(update_xlsx)
+        update_xlsx.triggered.connect(self.update_xlsx_DB_with_new_file)
 
-        elif combo_box == 2:
-            self.update_action = 2
-            file_name = self.choose_xlsx_file()
+        visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
 
-    def selection_choice_visualize(self, combo_box):
-        if combo_box == 1:
-            self.visualize_action = 1
-            pass
-        elif combo_box == 2:
-            self.visualize_action = 2
-            pass
-        elif combo_box == 3:
-            self.visualize_action = 3
-            pass
+        visualize_ascending_order = QAction("Ascending Order", visualize_text_file)
+        visualize_menu.addMenu(visualize_text_file)
+        visualize_text_file.addAction(visualize_ascending_order)
+        visualize_ascending_order.triggered.connect(self.close)  # still need to add function
 
-    def choose_xlsx_file(self):
+        visualize_descending_order = QAction("Descending Order", visualize_text_file)
+        visualize_text_file.addAction(visualize_descending_order)
+        visualize_descending_order.triggered.connect(self.close)  # still need to add function
+
+        visualize_map = QAction("Visualize Map", self)
+        visualize_menu.addAction(visualize_map)
+        visualize_map.triggered.connect(self.close)  # Still need to add function
+
+        exit_action = QAction('Exit', self)
+        exit_menu.addAction(exit_action)
+        exit_action.triggered.connect(self.close)
+
+        self.progress.setGeometry(1, 22, 175, 20)
+
+    def update_api_DB(self):
+
+        conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
+        DatabaseWork.setup_api_db(cursor)
+        DatabaseWork.populate_api_database(cursor, ApiData.get_data())
+        DatabaseWork.close_db(conn)
+        self.task_accomplished()
+
+    def update_xlsx_DB_with_new_file(self):
         filename = QFileDialog.getOpenFileName(self, "Open Image", None, "Image Files *.xlsx")
-        return filename
+        path = pathlib.PurePath(filename[0])
+        file_name = path.name
+        conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
+        DatabaseWork.setup_xls_db(cursor)
+        DatabaseWork.update_db_from_xl(file_name, cursor)
+        DatabaseWork.close_db(conn)
+        self.task_accomplished()
+
+    # May implement in future
+    # def task_in_progress(self):
+    #     completed = 0
+    #     while completed < 100:
+    #         completed += 0.00001
+    #         self.progress.setValue(completed)
+
+    def task_accomplished(self):
+        message_box = QMessageBox(self)
+        message_box.setText("Task Completed")
+        message_box.setWindowTitle("Congratulations!")
+        message_box.show()
