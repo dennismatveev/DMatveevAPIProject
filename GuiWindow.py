@@ -2,6 +2,7 @@ from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessage
 import DatabaseWork
 import ApiData
 import pathlib
+import OrganizeComparisonData
 
 
 class Window(QMainWindow):
@@ -10,7 +11,7 @@ class Window(QMainWindow):
 
         self.progress = QProgressBar(self)
         self.setWindowTitle("Gui Interaction")
-        self.setGeometry(300, 200, 500, 400)
+        self.setGeometry(300, 200, 900, 500)
 
         self.create_menu()
 
@@ -29,38 +30,10 @@ class Window(QMainWindow):
         update_xlsx.triggered.connect(self.update_xlsx_DB_with_new_file)
 
         grads_vs_num_jobs = visualize_menu.addMenu("Compare NumCollegeGrads vs NumJobs per state")
+        self.visualize_actions(grads_vs_num_jobs)
 
-        visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
-
-        visualize_ascending_order = QAction("Ascending Order", visualize_text_file)
-        grads_vs_num_jobs.addMenu(visualize_text_file)
-        visualize_text_file.addAction(visualize_ascending_order)
-        visualize_ascending_order.triggered.connect(self.close)  # still need to add function
-
-        visualize_descending_order = QAction("Descending Order", visualize_text_file)
-        visualize_text_file.addAction(visualize_descending_order)
-        visualize_descending_order.triggered.connect(self.close)  # still need to add function
-
-        visualize_map = QAction("Visualize Map", grads_vs_num_jobs)
-        grads_vs_num_jobs.addAction(visualize_map)
-        visualize_map.triggered.connect(self.close)  # Still need to add function
-
-
-
-        #  = QMenu("Compare NumCollegeGrads vs NumJobs per state", self)
-        #
-        # visualize_txt = QAction.QMenu("VisualizeTXT",self)
-        # visualize_asc = QAction("Ascend", visualize_txt)
-        # visualize_txt.addAction(visualize_asc)
-        # visualize_asc.triggered.connect(self.close)
-        #
-        # visualize_menu.addMenu(grads_vs_num_jobs)
-        # grads_vs_num_jobs.addAction(visualize_txt)
-
-
-
-        cohort_bal_vs_25_percentile__salary = QMenu("Compare 3YearCohortBal vs 25PercentileSalary per state", self)
-
+        cohort_bal_vs_25_percentile__salary = visualize_menu.addMenu("Compare 3YearCohortBal vs 25PercentileSalary per state")
+        self.visualize_actions(cohort_bal_vs_25_percentile__salary)
 
         exit_action = QAction('Exit', self)
         exit_menu.addAction(exit_action)
@@ -69,7 +42,21 @@ class Window(QMainWindow):
         self.progress.setGeometry(1, 22, 175, 20)
         self.progress.setTextVisible(False)
 
+    def visualize_actions(self, choice):
+        visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
 
+        visualize_ascending_order = QAction("Ascending Order", visualize_text_file)
+        choice.addMenu(visualize_text_file)
+        visualize_text_file.addAction(visualize_ascending_order)
+        visualize_ascending_order.triggered.connect(self.visualize_colored_text("a"))  # still need to add function
+
+        visualize_descending_order = QAction("Descending Order", visualize_text_file)
+        visualize_text_file.addAction(visualize_descending_order)
+        visualize_descending_order.triggered.connect(self.visualize_colored_text("d"))  # still need to add function
+
+        visualize_map = QAction("Visualize Map", choice)
+        choice.addAction(visualize_map)
+        visualize_map.triggered.connect(self.close)  # Still need to add function
 
     def update_api_DB(self):
         conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
@@ -89,8 +76,8 @@ class Window(QMainWindow):
         DatabaseWork.close_db(conn)
         self.task_accomplished()
 
-    def visualize_colored_text(self):
-        pass
+    def visualize_colored_text(self, sort_type):
+        OrganizeComparisonData.compare_graduates_vs_num_jobs(sort_type)
 
     def create_map(self):
         pass

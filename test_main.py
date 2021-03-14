@@ -112,6 +112,7 @@ def test_data_acquired():  # Tests if data from more than 50 states was obtained
 #     assert tables and boolean  # Checking to see if tables array exists, and if desired table is in the database
 
 
+
 def test_write_to_table():  # Check to see if Arizona is a state that has a major of Management Occupations
 
     target_state_name = 'Arizona'
