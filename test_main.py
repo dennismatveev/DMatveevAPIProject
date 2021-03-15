@@ -9,6 +9,7 @@ def get_db():
     conn, cursor = DatabaseWork.open_db('test_db_test.sqlite')
     return conn, cursor
 
+
 @pytest.fixture
 def get_demo_job_data():
     test_dict = {'occupation_code': '11-0000',
@@ -19,6 +20,7 @@ def get_demo_job_data():
                  "annual_25th_salary": 20000,
                  }
     return test_dict
+
 
 def test_api_entries():  # Tests to see if more than 1000 entries were obtained
     all_data = ApiData.get_data()
@@ -110,7 +112,6 @@ def test_data_acquired():  # Tests if data from more than 50 states was obtained
 #             boolean = True
 #
 #     assert tables and boolean  # Checking to see if tables array exists, and if desired table is in the database
-
 
 
 def test_write_to_table():  # Check to see if Arizona is a state that has a major of Management Occupations

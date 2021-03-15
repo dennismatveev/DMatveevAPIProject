@@ -7,6 +7,7 @@ import ComparisonDataGradsvsNum
 import ComparisonDataCohertvsSalary
 
 
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -42,8 +43,6 @@ class Window(QMainWindow):
         exit_menu.addAction(exit_action)
         exit_action.triggered.connect(self.close)
 
-
-
     def visualize_actions(self, choice, category: str):
         visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
 
@@ -63,7 +62,7 @@ class Window(QMainWindow):
             visualize_descending_order.triggered.connect(self.colored_text_descending_cohort)
 
         visualize_map = QAction("Visualize Map", choice)
-        choice.addAction(visualize_map)
+        cUoice.addAction(visualize_map)
         if category == "grads":
             visualize_map.triggered.connect(self.close)
         elif category == "cohort":
@@ -129,6 +128,7 @@ class Window(QMainWindow):
         label.setGeometry(100, 85, 300, 10)
         label.show()
 
+
     # May implem   ent in future       Label show and label close, and change cursor
     # shape
     #       self.progress.setGeometry(1, 22, 175, 20)
@@ -149,7 +149,7 @@ class Window(QMainWindow):
 
 
 ''' TO DO
-    Comparison Cohort
     Add color to text
     map
+    make some tests
 '''
