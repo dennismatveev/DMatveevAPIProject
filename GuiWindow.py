@@ -1,18 +1,18 @@
 from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar, QListWidget, \
-    QListWidgetItem
+    QListWidgetItem, QVBoxLayout, QLabel
 import DatabaseWork
 import ApiData
 import pathlib
-import OrganizeComparisonData
+import ComparisonDataGradsvsNum
+import ComparisonDataCohertvsSalary
 
 
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.progress = QProgressBar(self)
         self.setWindowTitle("Gui Interaction")
-        self.setGeometry(300, 200, 900, 500)
+        self.setGeometry(300, 200, 800, 500)
         self.list_control = None
 
         self.create_menu()
@@ -42,8 +42,7 @@ class Window(QMainWindow):
         exit_menu.addAction(exit_action)
         exit_action.triggered.connect(self.close)
 
-        self.progress.setGeometry(1, 22, 175, 20)
-        self.progress.setTextVisible(False)
+
 
     def visualize_actions(self, choice, category: str):
         visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
@@ -54,18 +53,21 @@ class Window(QMainWindow):
         if category == "grads":
             visualize_ascending_order.triggered.connect(self.colored_text_ascending_grads)
         elif category == "cohort":
-            visualize_ascending_order.triggered.connect(self.colored_text_ascending_cohort())
+            visualize_ascending_order.triggered.connect(self.colored_text_ascending_cohort)
 
         visualize_descending_order = QAction("Descending Order", visualize_text_file)
         visualize_text_file.addAction(visualize_descending_order)
         if category == "grads":
             visualize_descending_order.triggered.connect(self.colored_text_descending_grads)
-        # elif category == "cohort":
-        #     visualize_descending_order.triggered.connect(self.colored_text_descending_cohort())
+        elif category == "cohort":
+            visualize_descending_order.triggered.connect(self.colored_text_descending_cohort)
 
         visualize_map = QAction("Visualize Map", choice)
         choice.addAction(visualize_map)
-        visualize_map.triggered.connect(self.close)  # Still need to add function
+        if category == "grads":
+            visualize_map.triggered.connect(self.close)
+        elif category == "cohort":
+            visualize_map.triggered.connect(self.close)
 
     def update_api_DB(self):
         conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
@@ -86,43 +88,51 @@ class Window(QMainWindow):
         self.task_accomplished()
 
     def colored_text_ascending_grads(self):
-        OrganizeComparisonData.compare_graduates_vs_num_jobs()
-        dictionary = OrganizeComparisonData.sort_ascending_order()
+        ComparisonDataGradsvsNum.compare_graduates_vs_num_jobs()
+        dictionary = ComparisonDataGradsvsNum.sort_ascending_order()
         self.display_list(dictionary)
 
     def colored_text_descending_grads(self):
-        OrganizeComparisonData.compare_graduates_vs_num_jobs()
-        dictionary = OrganizeComparisonData.sort_descending_order()
+        ComparisonDataGradsvsNum.compare_graduates_vs_num_jobs()
+        dictionary = ComparisonDataGradsvsNum.sort_descending_order()
         self.display_list(dictionary)
 
+    def create_map_grads(self):
+        pass
+
     def colored_text_ascending_cohort(self):
-        OrganizeComparisonData.compare_graduates_vs_num_jobs()
-        dictionary = OrganizeComparisonData.sort_ascending_order()
+        ComparisonDataCohertvsSalary.compare_cohort_decline_vs_percentile_salary()
+        dictionary = ComparisonDataCohertvsSalary.sort_ascending_order()
         self.display_list(dictionary)
 
     def colored_text_descending_cohort(self):
-        OrganizeComparisonData.compare_graduates_vs_num_jobs()
-        dictionary = OrganizeComparisonData.sort_descending_order()
+        ComparisonDataCohertvsSalary.compare_cohort_decline_vs_percentile_salary()
+        dictionary = ComparisonDataCohertvsSalary.sort_descending_order()
         self.display_list(dictionary)
 
-    def create_map(self):
+    def create_map_cohort(self):
         pass
 
     def display_list(self, dictionary):
         list_control = None
         my_list = [(k, v) for k, v in dictionary.items()]
         display_list = QListWidget(self)
+        label = QLabel(self)
         self.list_control = display_list
         for item in my_list:
             display_text = f"{item[0]}\t\t{item[1]}"
-            list_item = QListWidgetItem(display_text, listview=self.list_control)
+            QListWidgetItem(display_text, listview=self.list_control)
         display_list.resize(400, 350)
         display_list.move(100, 100)
         display_list.show()
-
+        label.setText("State Abbrev:\t\t       Ratio:")
+        label.setGeometry(100, 85, 300, 10)
+        label.show()
 
     # May implem   ent in future       Label show and label close, and change cursor
     # shape
+    #       self.progress.setGeometry(1, 22, 175, 20)
+    #     self.progress.setTextVisible(False)
     # def task_in_progress(self):
     #     completed = 0
     #     while completed < 1000:
@@ -139,10 +149,7 @@ class Window(QMainWindow):
 
 
 ''' TO DO
-    no parameter can go to organizecomparison data
-    differentiate between the two kinds of data to visualize
-    
-    need to display dictionary on pyside window
-    
-    need to create map to visualize data on web see previous proj
+    Comparison Cohort
+    Add color to text
+    map
 '''

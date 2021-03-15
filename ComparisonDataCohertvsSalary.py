@@ -59,53 +59,49 @@ us_state_abbrev = {
     'Wyoming': 'WY'
 }
 inverse = {v: k for k, v in us_state_abbrev.items()}
-api_student_size_per_state = {}
-xls_total_emp_per_state = {}
+api_3year_decline_per_state = {}
+xls_percentile_salary_per_state = {}
 comparison = {}
 
 
-def get_student_size_per_state():
+def get_3_year_cohort_decline():
     states = []
     conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
-    cursor.execute("SELECT school_state, student_size_2018 FROM API_University_Data")
-    tables = cursor.fetchall()
+    cursor.execute("SELECT school_state, repayment_3yearDecliningBal_2016 FROM API_University_Data")
+    rows = cursor.fetchall()
     DatabaseWork.close_db(conn)
-    for table in tables:
-        if table[1] is None:
+    for row in rows:
+        if row[1] is None:
             continue
-        elif table[0] not in states:
-            api_student_size_per_state.update({str(table[0]): table[1]})
-            states.append(str(table[0]))
-        elif table[0] in states:
-            api_student_size_per_state[table[0]] = api_student_size_per_state[table[0]] + int(table[1])
+        elif row[0] not in states:
+            api_3year_decline_per_state[row[0]] = float(row[1])
+        elif row[0] in states:
+            api_3year_decline_per_state[row[0]] = api_3year_decline_per_state[row[0]] + float(row[1])
 
 
-def get_total_emp_per_state():
+def get_25th_percentile_salary():
     states = []
     conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
-    cursor.execute("SELECT state_name, total_employment FROM XLS_University_Data")
-    tables = cursor.fetchall()
+    cursor.execute("SELECT state_name, annual_25th_salary FROM XLS_University_Data")
+    rows = cursor.fetchall()
     DatabaseWork.close_db(conn)
-    for table in tables:
-        if table[0] not in states:
-            xls_total_emp_per_state.update({str(table[0]): table[1]})
-            states.append(str(table[0]))
-        elif table[0] in states:
-            xls_total_emp_per_state[table[0]] = xls_total_emp_per_state[table[0]] + int(table[1])
+    for row in rows:
+        if row[0] not in states:
+            xls_percentile_salary_per_state[row[0]] = int(row[1])
+            states.append(str(row[0]))
+        elif row[0] in states:
+            xls_percentile_salary_per_state[row[0]] = xls_percentile_salary_per_state[row[0]] + int(row[1])
 
 
-# Sort Ascend & Descend using _____.sort() vs _____.sort(reverse=True)
-def compare_graduates_vs_num_jobs():
-    get_student_size_per_state()
-    get_total_emp_per_state()
+def compare_cohort_decline_vs_percentile_salary():
+    get_3_year_cohort_decline()
+    get_25th_percentile_salary()
 
-    for api_key in api_student_size_per_state:
-        for xls_key in xls_total_emp_per_state:
-            counter = 0
+    for api_key in api_3year_decline_per_state:
+        for xls_key in xls_percentile_salary_per_state:
             if api_key in inverse and xls_key in us_state_abbrev:
                 comparison.update(
-                    {api_key: api_student_size_per_state.get(api_key) / xls_total_emp_per_state.get(xls_key)})
-            counter += 1
+                    {api_key: api_3year_decline_per_state.get(api_key) / xls_percentile_salary_per_state.get(xls_key)})
 
 
 def sort_ascending_order():
@@ -114,5 +110,3 @@ def sort_ascending_order():
 
 def sort_descending_order():
     return dict(sorted(comparison.items(), key=lambda item: item[1], reverse=True))
-
-
