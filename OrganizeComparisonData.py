@@ -1,4 +1,3 @@
-import ApiData
 import DatabaseWork
 
 us_state_abbrev = {
@@ -96,7 +95,7 @@ def get_total_emp_per_state():
 
 
 # Sort Ascend & Descend using _____.sort() vs _____.sort(reverse=True)
-def compare_graduates_vs_num_jobs(type_display: str):
+def compare_graduates_vs_num_jobs():
     get_student_size_per_state()
     get_total_emp_per_state()
 
@@ -108,9 +107,12 @@ def compare_graduates_vs_num_jobs(type_display: str):
                     {api_key: api_student_size_per_state.get(api_key) / xls_total_emp_per_state.get(xls_key)})
             counter += 1
 
-    if type_display == "a":
-        ascending_sort = dict(sorted(comparison.items(), key=lambda item: item[1]))
-        return ascending_sort
-    elif type_display == "d":
-        descending_sort = dict(sorted(comparison.items(), key=lambda item: item[1], reverse=True))
-        return descending_sort
+
+def sort_ascending_order():
+    return dict(sorted(comparison.items(), key=lambda item: item[1]))
+
+
+def sort_descending_order():
+    return dict(sorted(comparison.items(), key=lambda item: item[1], reverse=True))
+
+
