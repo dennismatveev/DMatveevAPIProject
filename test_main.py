@@ -1,7 +1,7 @@
 import pytest
 import ApiData
 import DatabaseWork
-import ComparisonDataGradsvsNumJobs
+ #import ComparisonDataGradsvsNumJobs
 import ComparisonDataCohortvsSalary
 
 
