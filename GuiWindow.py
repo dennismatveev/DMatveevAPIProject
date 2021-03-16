@@ -183,9 +183,3 @@ class Window(QMainWindow):
         message_box.setText("Task Completed")
         message_box.setWindowTitle("Congratulations!")
         message_box.show()
-
-
-''' TO DO
-    make some tests
-    make github actions work (will include updating requirements.txt) 
-'''
