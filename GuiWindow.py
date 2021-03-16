@@ -1,10 +1,11 @@
 from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar, QListWidget, \
     QListWidgetItem, QVBoxLayout, QLabel
+#from Pyside2.QtGui import QColor
 import DatabaseWork
 import ApiData
 import pathlib
-import ComparisonDataGradsvsNum
-import ComparisonDataCohertvsSalary
+import ComparisonDataGradsvsNumJobs
+import ComparisonDataCohortvsSalary
 
 
 
@@ -62,11 +63,11 @@ class Window(QMainWindow):
             visualize_descending_order.triggered.connect(self.colored_text_descending_cohort)
 
         visualize_map = QAction("Visualize Map", choice)
-        cUoice.addAction(visualize_map)
+        choice.addAction(visualize_map)
         if category == "grads":
-            visualize_map.triggered.connect(self.close)
+            visualize_map.triggered.connect(self.create_map_grads)
         elif category == "cohort":
-            visualize_map.triggered.connect(self.close)
+            visualize_map.triggered.connect(self.create_map_cohort)
 
     def update_api_DB(self):
         conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
@@ -87,40 +88,50 @@ class Window(QMainWindow):
         self.task_accomplished()
 
     def colored_text_ascending_grads(self):
-        ComparisonDataGradsvsNum.compare_graduates_vs_num_jobs()
-        dictionary = ComparisonDataGradsvsNum.sort_ascending_order()
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
+        dictionary = ComparisonDataGradsvsNumJobs.sort_ascending_order()
         self.display_list(dictionary)
+        self.task_accomplished()
 
     def colored_text_descending_grads(self):
-        ComparisonDataGradsvsNum.compare_graduates_vs_num_jobs()
-        dictionary = ComparisonDataGradsvsNum.sort_descending_order()
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
+        dictionary = ComparisonDataGradsvsNumJobs.sort_descending_order()
         self.display_list(dictionary)
+        self.task_accomplished()
 
     def create_map_grads(self):
-        pass
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
+        ComparisonDataGradsvsNumJobs.open_map_grads()
+        self.task_accomplished()
 
     def colored_text_ascending_cohort(self):
-        ComparisonDataCohertvsSalary.compare_cohort_decline_vs_percentile_salary()
-        dictionary = ComparisonDataCohertvsSalary.sort_ascending_order()
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
+        dictionary = ComparisonDataCohortvsSalary.sort_ascending_order()
         self.display_list(dictionary)
+        self.task_accomplished()
 
     def colored_text_descending_cohort(self):
-        ComparisonDataCohertvsSalary.compare_cohort_decline_vs_percentile_salary()
-        dictionary = ComparisonDataCohertvsSalary.sort_descending_order()
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
+        dictionary = ComparisonDataCohortvsSalary.sort_descending_order()
         self.display_list(dictionary)
+        self.task_accomplished()
 
     def create_map_cohort(self):
-        pass
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
+        ComparisonDataCohortvsSalary.open_map_cohort()
+        self.task_accomplished()
 
     def display_list(self, dictionary):
-        list_control = None
         my_list = [(k, v) for k, v in dictionary.items()]
         display_list = QListWidget(self)
         label = QLabel(self)
         self.list_control = display_list
         for item in my_list:
             display_text = f"{item[0]}\t\t{item[1]}"
-            QListWidgetItem(display_text, listview=self.list_control)
+            text = QListWidgetItem(display_text, listview=self.list_control)
+            #text.setForeground(QColor(255,0,0))
+
+
         display_list.resize(400, 350)
         display_list.move(100, 100)
         display_list.show()
@@ -149,7 +160,5 @@ class Window(QMainWindow):
 
 
 ''' TO DO
-    Add color to text
-    map
     make some tests
 '''
