@@ -187,6 +187,5 @@ class Window(QMainWindow):
 
 ''' TO DO
     make some tests
-    make github actions work (will include updating requirements.txt)
-    
+    make github actions work (will include updating requirements.txt) 
 '''
