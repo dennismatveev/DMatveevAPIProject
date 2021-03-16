@@ -1,12 +1,13 @@
 from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar, QListWidget, \
-    QListWidgetItem, QVBoxLayout, QLabel
-#from Pyside2.QtGui import QColor
+    QListWidgetItem, QLabel
+from PySide2.QtGui import QColor
+import math
+
 import DatabaseWork
 import ApiData
 import pathlib
 import ComparisonDataGradsvsNumJobs
 import ComparisonDataCohortvsSalary
-
 
 
 class Window(QMainWindow):
@@ -90,13 +91,13 @@ class Window(QMainWindow):
     def colored_text_ascending_grads(self):
         ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
         dictionary = ComparisonDataGradsvsNumJobs.sort_ascending_order()
-        self.display_list(dictionary)
+        self.display_list(dictionary, "grad")
         self.task_accomplished()
 
     def colored_text_descending_grads(self):
         ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
         dictionary = ComparisonDataGradsvsNumJobs.sort_descending_order()
-        self.display_list(dictionary)
+        self.display_list(dictionary, "grad")
         self.task_accomplished()
 
     def create_map_grads(self):
@@ -107,13 +108,13 @@ class Window(QMainWindow):
     def colored_text_ascending_cohort(self):
         ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
         dictionary = ComparisonDataCohortvsSalary.sort_ascending_order()
-        self.display_list(dictionary)
+        self.display_list(dictionary, "cohort")
         self.task_accomplished()
 
     def colored_text_descending_cohort(self):
         ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
         dictionary = ComparisonDataCohortvsSalary.sort_descending_order()
-        self.display_list(dictionary)
+        self.display_list(dictionary, "cohort")
         self.task_accomplished()
 
     def create_map_cohort(self):
@@ -121,16 +122,12 @@ class Window(QMainWindow):
         ComparisonDataCohortvsSalary.open_map_cohort()
         self.task_accomplished()
 
-    def display_list(self, dictionary):
+    def display_list(self, dictionary, comparison_type):
         my_list = [(k, v) for k, v in dictionary.items()]
         display_list = QListWidget(self)
         label = QLabel(self)
         self.list_control = display_list
-        for item in my_list:
-            display_text = f"{item[0]}\t\t{item[1]}"
-            text = QListWidgetItem(display_text, listview=self.list_control)
-            #text.setForeground(QColor(255,0,0))
-
+        self.color_code_text(comparison_type, my_list)
 
         display_list.resize(400, 350)
         display_list.move(100, 100)
@@ -140,17 +137,40 @@ class Window(QMainWindow):
         label.show()
 
 
-    # May implem   ent in future       Label show and label close, and change cursor
-    # shape
-    #       self.progress.setGeometry(1, 22, 175, 20)
-    #     self.progress.setTextVisible(False)
-    # def task_in_progress(self):
-    #     completed = 0
-    #     while completed < 1000:
-    #         completed += 1
-    #         self.progress.setValue(completed)
-    #         if completed == 999:
-    #             completed = 0
+    def color_code_text(self, data_to_compare, comparison_list):
+        for item in comparison_list:
+            display_text = f"{item[0]}\t\t{item[1]}"
+            text = QListWidgetItem(display_text, listview=self.list_control)
+            if data_to_compare == "grad":
+                increment = (int(ComparisonDataGradsvsNumJobs.get_max_ratio())
+                             - int(ComparisonDataGradsvsNumJobs.get_min_ratio())) / 6
+                if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment:
+                    text.setForeground(QColor(0, 0, 255))
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*2:
+                    text.setForeground(QColor(40, 0, 215))
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*3:
+                    text.setForeground(QColor(100, 0, 160))
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*4:
+                    text.setForeground(QColor(160, 0, 100))
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*5:
+                    text.setForeground(QColor(215, 0, 40))
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*6:
+                    text.setForeground(QColor(254, 0, 0))
+            elif data_to_compare == "cohort":
+                increment = (int(ComparisonDataCohortvsSalary.get_max_ratio())
+                             - int(ComparisonDataCohortvsSalary.get_min_ratio())) / 6
+                if item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment:
+                    text.setForeground(QColor(0, 0, 255))
+                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 2:
+                    text.setForeground(QColor(40, 0, 215))
+                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 3:
+                    text.setForeground(QColor(100, 0, 160))
+                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 4:
+                    text.setForeground(QColor(160, 0, 100))
+                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 5:
+                    text.setForeground(QColor(215, 0, 40))
+                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 6:
+                    text.setForeground(QColor(254, 0, 0))
 
     def task_accomplished(self):
         message_box = QMessageBox(self)
