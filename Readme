@@ -32,6 +32,7 @@ To whom it may concern,
     In the newest update of the project, we have now implemented a GUI for user convenience. The user can now update
         the api data with the click of a button, as well as update the excel file and even specify which file(please
         make sure it has the same setup as the original CollegeData.xlsx)
+        ** Please Note, Before any visualization can be done, both both of the databases need to be updated**
         The user can also choose to visualize the data(must be done only after updating both data sets)
         They can either choose to visualize the data in a map format, or they can choose to view it in a color coded
         text format (same colors as on the map) in either ascending or descending format.

@@ -72,7 +72,7 @@ def get_database_information_api(database):
 
 
 def get_database_information_cohort(database):
-    conn, cursor = DatabaseWork.open_db("demo_db.sqlite")
+    conn, cursor = DatabaseWork.open_db(database)
     cursor.execute("SELECT state_name, annual_25th_salary FROM XLS_University_Data")
     rows = cursor.fetchall()
     DatabaseWork.close_db(conn)
