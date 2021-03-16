@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar, QListWidget, \
+from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QListWidget, \
     QListWidgetItem, QLabel
 from PySide2.QtGui import QColor
 

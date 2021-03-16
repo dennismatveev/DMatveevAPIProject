@@ -1,8 +1,7 @@
 import pytest
 import ApiData
 import DatabaseWork
-import ComparisonDataCohortvsSalary
-import ComparisonDataGradsvsNumJobs
+
 
 
 @pytest.fixture
