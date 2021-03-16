@@ -3,7 +3,6 @@ import ApiData
 import DatabaseWork
 
 
-
 @pytest.fixture
 def get_db():
     conn, cursor = DatabaseWork.open_db('test_db_test.sqlite')
