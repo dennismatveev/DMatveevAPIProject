@@ -1,7 +1,6 @@
 from PySide2.QtWidgets import QMainWindow, QAction, QMenu, QFileDialog, QMessageBox, QProgressBar, QListWidget, \
     QListWidgetItem, QLabel
 from PySide2.QtGui import QColor
-import math
 
 import DatabaseWork
 import ApiData
@@ -136,7 +135,6 @@ class Window(QMainWindow):
         label.setGeometry(100, 85, 300, 10)
         label.show()
 
-
     def color_code_text(self, data_to_compare, comparison_list):
         for item in comparison_list:
             display_text = f"{item[0]}\t\t{item[1]}"
@@ -146,15 +144,15 @@ class Window(QMainWindow):
                              - int(ComparisonDataGradsvsNumJobs.get_min_ratio())) / 6
                 if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment:
                     text.setForeground(QColor(0, 0, 255))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*2:
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 2:
                     text.setForeground(QColor(40, 0, 215))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*3:
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 3:
                     text.setForeground(QColor(100, 0, 160))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*4:
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 4:
                     text.setForeground(QColor(160, 0, 100))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*5:
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 5:
                     text.setForeground(QColor(215, 0, 40))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment*6:
+                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 6:
                     text.setForeground(QColor(254, 0, 0))
             elif data_to_compare == "cohort":
                 increment = (int(ComparisonDataCohortvsSalary.get_max_ratio())
@@ -181,4 +179,6 @@ class Window(QMainWindow):
 
 ''' TO DO
     make some tests
+    make github actions work (will include updating requirements.txt)
+    update readme
 '''
