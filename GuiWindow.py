@@ -9,6 +9,40 @@ import ComparisonDataGradsvsNumJobs
 import ComparisonDataCohortvsSalary
 
 
+def determine_color_grads(item, text):
+    increment = (int(ComparisonDataGradsvsNumJobs.get_max_ratio())
+                 - int(ComparisonDataGradsvsNumJobs.get_min_ratio())) / 6
+    if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment:
+        text.setForeground(QColor(0, 0, 255))
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 2:
+        text.setForeground(QColor(40, 0, 215))
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 3:
+        text.setForeground(QColor(100, 0, 160))
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 4:
+        text.setForeground(QColor(160, 0, 100))
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 5:
+        text.setForeground(QColor(215, 0, 40))
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 6:
+        text.setForeground(QColor(254, 0, 0))
+
+
+def determine_color_cohort(item, text):
+    increment = (int(ComparisonDataCohortvsSalary.get_max_ratio())
+                 - int(ComparisonDataCohortvsSalary.get_min_ratio())) / 6
+    if item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment:
+        text.setForeground(QColor(0, 0, 255))
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 2:
+        text.setForeground(QColor(40, 0, 215))
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 3:
+        text.setForeground(QColor(100, 0, 160))
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 4:
+        text.setForeground(QColor(160, 0, 100))
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 5:
+        text.setForeground(QColor(215, 0, 40))
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 6:
+        text.setForeground(QColor(254, 0, 0))
+
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -140,35 +174,9 @@ class Window(QMainWindow):
             display_text = f"{item[0]}\t\t{item[1]}"
             text = QListWidgetItem(display_text, listview=self.list_control)
             if data_to_compare == "grad":
-                increment = (int(ComparisonDataGradsvsNumJobs.get_max_ratio())
-                             - int(ComparisonDataGradsvsNumJobs.get_min_ratio())) / 6
-                if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment:
-                    text.setForeground(QColor(0, 0, 255))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 2:
-                    text.setForeground(QColor(40, 0, 215))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 3:
-                    text.setForeground(QColor(100, 0, 160))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 4:
-                    text.setForeground(QColor(160, 0, 100))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 5:
-                    text.setForeground(QColor(215, 0, 40))
-                elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 6:
-                    text.setForeground(QColor(254, 0, 0))
+                determine_color_grads(item, text)
             elif data_to_compare == "cohort":
-                increment = (int(ComparisonDataCohortvsSalary.get_max_ratio())
-                             - int(ComparisonDataCohortvsSalary.get_min_ratio())) / 6
-                if item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment:
-                    text.setForeground(QColor(0, 0, 255))
-                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 2:
-                    text.setForeground(QColor(40, 0, 215))
-                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 3:
-                    text.setForeground(QColor(100, 0, 160))
-                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 4:
-                    text.setForeground(QColor(160, 0, 100))
-                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 5:
-                    text.setForeground(QColor(215, 0, 40))
-                elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 6:
-                    text.setForeground(QColor(254, 0, 0))
+                determine_color_cohort(item, text)
 
     def task_accomplished(self):
         message_box = QMessageBox(self)
