@@ -43,5 +43,6 @@ To whom it may concern,
         description of the test case, the steps needed to accomplish it, the preconditions, the post conditions, and the
         expected results as well as some data points for the user to compare to.
 
+        There are two tests that verify that the comparison data( making of the ratios) does work, and returns new data
 
     There is nothing missing from the code.
