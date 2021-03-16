@@ -1,2 +1,5 @@
 requests
 openpyxl
+pandas
+plotly
+PySide2

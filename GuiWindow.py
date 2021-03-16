@@ -79,7 +79,7 @@ class Window(QMainWindow):
         exit_action.triggered.connect(self.close)
 
     def visualize_actions(self, choice, category: str):
-        visualize_text_file = QMenu("Visualize TXT File", self)  # Make menubar with extended options
+        visualize_text_file = QMenu("Visualize TXT Format", self)  # Make menubar with extended options
 
         visualize_ascending_order = QAction("Ascending Order", visualize_text_file)
         choice.addMenu(visualize_text_file)
