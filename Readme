@@ -3,13 +3,13 @@ To whom it may concern,
     My name is Dennis Matveev,
     This project does not have any special directions needed to run it.
     This project is designed to retrieve college data using an API key,
-        the current fields that are displayed are the id, school name, school city,
+        the current fields that are displayed are the id, school state, school name, school city,
         student size in 2018 & 2017, 2017 earnings 3 years after completion of college,
-        as well as the 2016 repayment after 3 years.
+        2016 repayment after 3 years as well as the 2016 cohort declining balance ratio
         The retrieved data is placed into a database, where it is organized by each of the fields.
 
         Requirements.txt was created so the .yml was able to get the necessary dependencies:
-        requests & openpyxl
+        requests & openpyxl &
 
         On the top of the database, you will see all the fields which is created upon the creation of the database.
         Next I traversed through the dictionary elements of my list, and assigned each element to the respected field.
@@ -17,21 +17,31 @@ To whom it may concern,
         Two tests were setup. One that verifies that over 1000 data was entered, and the another tests that
         a new database can be created and it will have a chosen unique id for the school.
 
-        Initially I had Test#2 create a new table, and then had it verify if the table was created.
-        After rereading the instruction for the code, I decided to get rid of this as it wasn't what
-        the test was asking for. So I changed it to determine if a specific key is in the new database that is created.
+        Test#2 puts a sample data value into the api database, and then retrieves the data from the database
+        to verify if that sample data is retrieved.
 
 
     Receives data from Excel file, creates new table, and populates database with current data:
         Occupation code, State, Occupation Title of type Major, Total employment for that state, and the
         25th percentile salary of the occupation in that state
 
-        Four more tests were created: One to test if data from more than 50 states was collected. Another to test
-        if the new table exists in the database. As well as if the first(api) table exists too. The last test
-        verified that a certain datapoint existed in the new table that was created from the excel file.
+        Tests to check if the correct data was retrieved from the excel file was made, buy obtaining all the states,
+        and verifying there are over 50 states (as we include all territories too)
+        Another test to make sure the excel data is put in properly and pulled from the database(like the api test)
 
-    * Just fyi: The GitHub Test took about 5-10 minutes to run and complete. I believe this is due to me having it
-    create the db and populate it in each test. Since I was under the impression each test must be independent of
-    everything else. *
+    In the newest update of the project, we have now implemented a GUI for user convenience. The user can now update
+        the api data with the click of a button, as well as update the excel file and even specify which file(please
+        make sure it has the same setup as the original CollegeData.xlsx)
+        The user can also choose to visualize the data(must be done only after updating both data sets)
+        They can either choose to visualize the data in a map format, or they can choose to view it in a color coded
+        text format (same colors as on the map) in either ascending or descending format.
+        After every successful execution of one of the tasks, a task acomplished popup appears. Please be patient when
+        updating the data, as it may take some time... wait for the accomplished popup before proceeding with further actions
+        There is also a functional Exit button to close out of the GUI.
+
+        Testing for the GUI, manual testing was performed, please view the " Manual GUI Tests " file. It gives a detailed
+        description of the test case, the steps needed to accomplish it, the preconditions, the post conditions, and the
+        expected results as well as some data points for the user to compare to.
+
 
     There is nothing missing from the code.
