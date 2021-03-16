@@ -1,6 +1,20 @@
 import pytest
 import ApiData
 import DatabaseWork
+import ComparisonDataGradsvsNumJobs
+import ComparisonDataCohortvsSalary
+
+
+def compare_api_and_xlsx_data(get_db, get_demo_api_data):
+    conn, cursor = get_db
+
+    DatabaseWork.setup_api_db(cursor)
+    test_data = get_demo_api_data
+    DatabaseWork.populate_api_database(cursor, test_data)
+
+    DatabaseWork.setup_xls_db(cursor)
+    DatabaseWork.update_db_from_xl("CollegeData.xlsx", cursor)
+    DatabaseWork.close_db(conn)
 
 
 @pytest.fixture
@@ -24,11 +38,23 @@ def get_demo_job_data():
 @pytest.fixture()
 def get_demo_api_data():
     test_data = [{'id': 1, 'school.state': 'MA', 'school.name': 'Test University', 'school.city': 'Bridgewater',
-                  '2018.student.size': 1000, '2017.student.size': 1001,
+                  '2018.student.size': 0, '2017.student.size': 1001,
                   '2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line': 456,
                   '2016.repayment.3_yr_repayment.overall': 4004,
-                  '2016.repayment.repayment_cohort.3_year_declining_balance': 10}]
+                  '2016.repayment.repayment_cohort.3_year_declining_balance': 0}]
     return test_data
+
+
+@pytest.fixture()
+def get_api_and_xlsx_data(get_db):
+    conn, cursor = get_db
+    DatabaseWork.setup_api_db(cursor)
+    test_data = get_demo_api_data
+    DatabaseWork.populate_api_database(cursor, test_data)
+
+    DatabaseWork.setup_xls_db(cursor)
+    DatabaseWork.update_db_from_xl("CollegeData.xlsx", cursor)
+    DatabaseWork.close_db(conn)
 
 
 def test_api_entries():  # Tests to see if more than 1000 entries were obtained
@@ -37,7 +63,8 @@ def test_api_entries():  # Tests to see if more than 1000 entries were obtained
     assert size >= 1000
 
 
-def test_university_test(get_db, get_demo_api_data):  # Create new database with test data, and check if the data is in the db
+def test_university_test(get_db,
+                         get_demo_api_data):  # Create new database with test data, and check if the data is in the db
     conn, cursor = get_db
     DatabaseWork.setup_api_db(cursor)
     test_data = get_demo_api_data
@@ -69,6 +96,7 @@ def test_new_table_exist(get_db, get_demo_api_data):  # Tests to see if new tabl
     test_data = get_demo_api_data
     DatabaseWork.populate_api_database(cursor, test_data)
 
+    DatabaseWork.setup_xls_db(cursor)
     DatabaseWork.update_db_from_xl("CollegeData.xlsx", cursor)
 
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
@@ -95,3 +123,17 @@ def test_write_to_table(get_db):  # Check to see if Arizona is a state that has 
     tables = cursor.fetchall()
     DatabaseWork.close_db(conn)
     assert len(tables) == 1  # If we got some data from the excel file
+
+
+def test_compare_graduates_vs_num_jobs(get_db, get_demo_api_data):
+    compare_api_and_xlsx_data(get_db, get_demo_api_data)
+    dictionary = ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs("test_db_test.sqlite")
+    assert list(dictionary.keys())[0] == "MA"
+    assert int(list(dictionary.values())[0]) == 0.0
+
+
+def test_compare_bal_vs_salary(get_db, get_demo_api_data):
+    compare_api_and_xlsx_data(get_db, get_demo_api_data)
+    dictionary = ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary("test_db_test.sqlite")
+    assert list(dictionary.keys())[0] == "MA"
+    assert int(list(dictionary.values())[0]) == 0.0

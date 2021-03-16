@@ -10,36 +10,36 @@ import ComparisonDataCohortvsSalary
 
 
 def determine_color_grads(item, text):
-    increment = (int(ComparisonDataGradsvsNumJobs.get_max_ratio())
-                 - int(ComparisonDataGradsvsNumJobs.get_min_ratio())) / 6
-    if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment:
+    increment = (int(ComparisonDataGradsvsNumJobs.get_max_ratio("demo_db.sqlite"))
+                 - int(ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite"))) / 6
+    if item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment:
         text.setForeground(QColor(0, 0, 255))
-    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 2:
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment * 2:
         text.setForeground(QColor(40, 0, 215))
-    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 3:
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment * 3:
         text.setForeground(QColor(100, 0, 160))
-    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 4:
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment * 4:
         text.setForeground(QColor(160, 0, 100))
-    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 5:
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment * 5:
         text.setForeground(QColor(215, 0, 40))
-    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio() + increment * 6:
+    elif item[1] < ComparisonDataGradsvsNumJobs.get_min_ratio("demo_db.sqlite") + increment * 6:
         text.setForeground(QColor(254, 0, 0))
 
 
 def determine_color_cohort(item, text):
-    increment = (int(ComparisonDataCohortvsSalary.get_max_ratio())
-                 - int(ComparisonDataCohortvsSalary.get_min_ratio())) / 6
-    if item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment:
+    increment = (int(ComparisonDataCohortvsSalary.get_max_ratio("demo_db.sqlite"))
+                 - int(ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite"))) / 6
+    if item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment:
         text.setForeground(QColor(0, 0, 255))
-    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 2:
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment * 2:
         text.setForeground(QColor(40, 0, 215))
-    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 3:
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment * 3:
         text.setForeground(QColor(100, 0, 160))
-    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 4:
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment * 4:
         text.setForeground(QColor(160, 0, 100))
-    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 5:
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment * 5:
         text.setForeground(QColor(215, 0, 40))
-    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio() + increment * 6:
+    elif item[1] < ComparisonDataCohortvsSalary.get_min_ratio("demo_db.sqlite") + increment * 6:
         text.setForeground(QColor(254, 0, 0))
 
 
@@ -122,37 +122,37 @@ class Window(QMainWindow):
         self.task_accomplished()
 
     def colored_text_ascending_grads(self):
-        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
-        dictionary = ComparisonDataGradsvsNumJobs.sort_ascending_order()
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs("demo_db.sqlite")
+        dictionary = ComparisonDataGradsvsNumJobs.sort_ascending_order("demo_db.sqlite")
         self.display_list(dictionary, "grad")
         self.task_accomplished()
 
     def colored_text_descending_grads(self):
-        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
-        dictionary = ComparisonDataGradsvsNumJobs.sort_descending_order()
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs("demo_db.sqlite")
+        dictionary = ComparisonDataGradsvsNumJobs.sort_descending_order("demo_db.sqlite")
         self.display_list(dictionary, "grad")
         self.task_accomplished()
 
     def create_map_grads(self):
-        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs()
-        ComparisonDataGradsvsNumJobs.open_map_grads()
+        ComparisonDataGradsvsNumJobs.compare_graduates_vs_num_jobs("demo_db.sqlite")
+        ComparisonDataGradsvsNumJobs.open_map_grads("demo_db.sqlite")
         self.task_accomplished()
 
     def colored_text_ascending_cohort(self):
-        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
-        dictionary = ComparisonDataCohortvsSalary.sort_ascending_order()
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary("demo_db.sqlite")
+        dictionary = ComparisonDataCohortvsSalary.sort_ascending_order("demo_db.sqlite")
         self.display_list(dictionary, "cohort")
         self.task_accomplished()
 
     def colored_text_descending_cohort(self):
-        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
-        dictionary = ComparisonDataCohortvsSalary.sort_descending_order()
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary("demo_db.sqlite")
+        dictionary = ComparisonDataCohortvsSalary.sort_descending_order("demo_db.sqlite")
         self.display_list(dictionary, "cohort")
         self.task_accomplished()
 
     def create_map_cohort(self):
-        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary()
-        ComparisonDataCohortvsSalary.open_map_cohort()
+        ComparisonDataCohortvsSalary.compare_cohort_decline_vs_percentile_salary("demo_db.sqlite")
+        ComparisonDataCohortvsSalary.open_map_cohort("demo_db.sqlite")
         self.task_accomplished()
 
     def display_list(self, dictionary, comparison_type):
@@ -188,5 +188,5 @@ class Window(QMainWindow):
 ''' TO DO
     make some tests
     make github actions work (will include updating requirements.txt)
-    update readme
+    
 '''
