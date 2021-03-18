@@ -36,7 +36,7 @@ To whom it may concern,
         The user can also choose to visualize the data(must be done only after updating both data sets)
         They can either choose to visualize the data in a map format, or they can choose to view it in a color coded
         text format (same colors as on the map) in either ascending or descending format.
-        After every successful execution of one of the tasks, a task acomplished popup appears. Please be patient when
+        After every successful execution of one of the tasks, a task accomplished popup appears. Please be patient when
         updating the data, as it may take some time... wait for the accomplished popup before proceeding with further actions
         There is also a functional Exit button to close out of the GUI.
 
@@ -45,5 +45,8 @@ To whom it may concern,
         expected results as well as some data points for the user to compare to.
 
         There are two tests that verify that the comparison data( making of the ratios) does work, and returns new data
+        For my updating of the api/xlsx db, the update api uses the same function as the get data which from previous sprints
+        we know does function. In addition I refactored my code and previous tests so that it uses the update db with xlsx
+        functions, thus it works too. I received your OK on 3/17
 
     There is nothing missing from the code.
